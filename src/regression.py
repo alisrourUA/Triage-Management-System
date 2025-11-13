@@ -1,17 +1,10 @@
-# regression.py
-# Manual Multiple Linear Regression (no numpy/sklearn)
-# ----------------------------------------------------
 # Implements training and prediction of recovery time
 # using the Normal Equation: (X^T X)β = X^T y
 # Solved via Gaussian elimination (Gauss–Jordan).
-# ----------------------------------------------------
 
-# =====================================================
-# 1) Matrix utilities
-# =====================================================
 
 def matmul(A, B):
-    """Multiply matrices A (m×k) and B (k×n) -> (m×n)."""
+    """Multiply matrices A (mxk) and B (kxn) -> (mxn)."""
     m, k = len(A), len(A[0])
     kb, n = len(B), len(B[0])
     if k != kb:
@@ -27,7 +20,7 @@ def matmul(A, B):
 
 
 def transpose(M):
-    """Transpose matrix M (m×n) -> (n×m)."""
+    """Transpose matrix M (mxn) -> (nxm)."""
     m, n = len(M), len(M[0])
     T = [[0.0 for _ in range(m)] for _ in range(n)]
     for i in range(m):
@@ -39,7 +32,7 @@ def transpose(M):
 def gauss_jordan_solve(A, b):
     """
     Solve A x = b using Gauss-Jordan elimination.
-    A is nxn, b is length n → returns list x of length n.
+    A is nxn, b is length n, thus this returns a list x of length n.
     """
     n = len(A)
     aug = [row[:] + [b[i]] for i, row in enumerate(A)]
@@ -95,9 +88,7 @@ def build_design_matrix(patients, feature_names):
 
 
 def fit_linear_regression(patients, feature_names):
-    """
-    Fit regression coefficients for y = b0 + b1*x1 + ... + bk*xk.
-    """
+    """Fit regression coefficients for y = b0 + b1*x1 + ... + bk*xk."""
     X, y = build_design_matrix(patients, feature_names)
     y_col = [[val] for val in y]
 
@@ -163,6 +154,5 @@ def predict_recovery_time(patient):
     if _cached_model is None:
         raise RuntimeError(
             "Recovery model not trained. "
-            "Call train_recovery_model(load_dataset().to_dict('records')) first."
         )
     return predict_one(_cached_model, patient)
